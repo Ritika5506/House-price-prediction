@@ -1,11 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 import pickle
 import numpy as np
+import os
 
 app = Flask(__name__)
 
+# Configure static folder
+app.static_folder = 'static'
+app.static_url_path = '/static'
+
+# Get the project root directory (parent of app folder)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # load trained model
-model = pickle.load(open("models/house_price_model.pkl", "rb"))
+model = pickle.load(open(os.path.join(PROJECT_ROOT, "models/house_price_model.pkl"), "rb"))
 
 @app.route("/")
 def home():

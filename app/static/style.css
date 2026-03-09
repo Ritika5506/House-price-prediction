@@ -139,17 +139,15 @@ body::before {
 /* Main Card Container */
 .card-container {
     width: 100%;
-    max-width: 95vw;
-    max-height: 90vh;
+    max-width: 500px;
+    max-height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
-    background: var(--bg-card);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-card), 0 0 0 1px rgba(255, 255, 255, 0.1);
-    padding: 48px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    padding: 40px;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
 }
 
 /* Colorful top accent */
@@ -392,14 +390,15 @@ body::before {
 .input-field {
     width: 100%;
     padding: 16px 18px 16px 50px;
-    font-size: 14px;
+    font-size: 16px;
     font-family: 'Poppins', sans-serif;
-    color: var(--text-dark);
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 2px solid transparent;
+    color: #1a1a2e;
+    background: #ffffff;
+    border: 2px solid #667eea;
     border-radius: var(--radius-md);
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
 }
 
 .input-field::placeholder {
@@ -423,26 +422,46 @@ body::before {
 /* Submit Button - Ultra Vibrant */
 .submit-btn {
     width: 100%;
-    padding: 18px 28px;
-    font-size: 16px;
-    font-weight: 700;
+    padding: 20px 28px;
+    font-size: 20px;
+    font-weight: 800;
     font-family: 'Poppins', sans-serif;
     color: #ffffff;
-    background: var(--gradient-sunset);
+    background: linear-gradient(135deg, #ff6b6b, #ff9a44);
     border: none;
-    border-radius: var(--radius-md);
+    border-radius: 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Reset Button */
+.reset-btn {
+    width: 100%;
+    padding: 16px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: #667eea;
+    background: #ffffff;
+    border: 3px solid #667eea;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
     margin-top: 12px;
-    box-shadow: 
-        0 10px 30px rgba(250, 112, 154, 0.35),
-        0 5px 15px rgba(250, 112, 154, 0.2);
-    position: relative;
-    overflow: hidden;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 /* Shimmer effect */
@@ -511,35 +530,6 @@ body::before {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
-}
-
-/* Reset Button */
-.reset-btn {
-    width: 100%;
-    padding: 14px 28px;
-    font-size: 14px;
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
-    color: var(--text-muted);
-    background: transparent;
-    border: 2px solid #e2e8f0;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.reset-btn:hover {
-    border-color: var(--color-purple);
-    color: var(--color-purple);
-    transform: translateY(-2px);
-}
-
-.reset-btn i {
-    font-size: 14px;
 }
 
 /* Loading Overlay */
