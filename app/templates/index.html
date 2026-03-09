@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="House Price Prediction - AI-powered real estate valuation">
+    <title>House Price Prediction</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <!-- Floating Background Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    
+    <!-- Sparkle Container -->
+    <div class="sparkle-container" id="sparkleContainer"></div>
+
+    <!-- Main Card Container -->
+    <div class="card-container">
+        
+        <!-- Decorative Elements -->
+        <div class="card-decor card-decor-1"></div>
+        <div class="card-decor card-decor-2"></div>
+        
+        <!-- Card Header -->
+        <div class="card-header">
+            <div class="house-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <h1 class="card-title">House Price Prediction</h1>
+            <p class="card-subtitle">Get an instant AI-powered valuation for your property.</p>
+        </div>
+
+        <!-- Prediction Form -->
+        <form action="/predict" method="POST" class="prediction-form" id="predictionForm">
+            
+            <!-- Number of Rooms Input -->
+            <div class="input-group">
+                <label for="rooms" class="input-label">
+                    <i class="fas fa-door-open"></i>
+                    Number of Rooms
+                </label>
+                <div class="input-wrapper">
+                    <input 
+                        type="number" 
+                        id="rooms" 
+                        name="rooms" 
+                        class="input-field"
+                        placeholder="Enter number of rooms" 
+                        step="any" 
+                        min="1"
+                        required
+                    >
+                    <i class="fas fa-door-open input-icon"></i>
+                </div>
+                <div class="input-hint" id="roomsHint">e.g., 3, 4, 5</div>
+            </div>
+
+            <!-- LSTAT Input -->
+            <div class="input-group">
+                <label for="lstat" class="input-label">
+                    <i class="fas fa-percentage"></i>
+                    LSTAT (Lower Status Population %)
+                </label>
+                <div class="input-wrapper">
+                    <input 
+                        type="number" 
+                        id="lstat" 
+                        name="lstat" 
+                        class="input-field"
+                        placeholder="Enter LSTAT value" 
+                        step="any"
+                        min="0"
+                        max="100"
+                        required
+                    >
+                    <i class="fas fa-percentage input-icon"></i>
+                </div>
+                <div class="input-hint" id="lstatHint">Percentage (0-100)</div>
+            </div>
+
+            <!-- PTRATIO Input -->
+            <div class="input-group">
+                <label for="ptratio" class="input-label">
+                    <i class="fas fa-graduation-cap"></i>
+                    PTRATIO (Pupil-Teacher Ratio)
+                </label>
+                <div class="input-wrapper">
+                    <input 
+                        type="number" 
+                        id="ptratio" 
+                        name="ptratio" 
+                        class="input-field"
+                        placeholder="Enter PTRATIO value" 
+                        step="any"
+                        min="0"
+                        required
+                    >
+                    <i class="fas fa-graduation-cap input-icon"></i>
+                </div>
+                <div class="input-hint" id="ptratioHint">e.g., 12, 15, 18</div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fas fa-calculator"></i>
+                <span>Predict Price</span>
+                <div class="btn-loader"></div>
+            </button>
+            
+            <!-- Reset Button -->
+            <button type="button" class="reset-btn" id="resetBtn">
+                <i class="fas fa-redo"></i>
+                <span>Clear</span>
+            </button>
+
+        </form>
+
+        <!-- Loading State -->
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                </div>
+                <p class="loading-text">Analyzing property data...</p>
+                <div class="loading-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        {% if prediction_text %}
+        <div class="result-section" id="resultSection">
+            <div class="result-glow"></div>
+            <div class="result-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="result-label">Estimated Price</div>
+            <div class="result-value">{{ prediction_text }}</div>
+            <div class="result-details">
+                <div class="result-detail-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Instant Result</span>
+                </div>
+                <div class="result-detail-item">
+                    <i class="fas fa-robot"></i>
+                    <span>AI Powered</span>
+                </div>
+            </div>
+            <div class="result-badge">
+                <i class="fas fa-check-circle"></i>
+                <span>Prediction Complete</span>
+            </div>
+        </div>
+        {% else %}
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+            <div class="empty-icon">
+                <i class="fas fa-home"></i>
+            </div>
+            <h3 class="empty-title">Ready to Predict</h3>
+            <p class="empty-text">Enter your property details above to get an instant AI-powered house price estimate.</p>
+            <div class="empty-features">
+                <div class="empty-feature">
+                    <i class="fas fa-bolt"></i>
+                    <span>Fast</span>
+                </div>
+                <div class="empty-feature">
+                    <i class="fas fa-brain"></i>
+                    <span>Smart</span>
+                </div>
+                <div class="empty-feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Secure</span>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Card Footer -->
+        <div class="card-footer">
+            <p class="footer-text">© 2026 House Price Predictor. All rights reserved.</p>
+        </div>
+
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <script>
+        // Form handling
+        const form = document.getElementById('predictionForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const resultSection = document.getElementById('resultSection');
+        const emptyState = document.getElementById('emptyState');
+        
+        // Show loading on form submit
+        form.addEventListener('submit', function(e) {
+            // Add loading class to button
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            
+            // Show loading overlay
+            setTimeout(() => {
+                loadingOverlay.classList.add('active');
+            }, 300);
+        });
+        
+        // Reset button functionality
+        resetBtn.addEventListener('click', function() {
+            form.reset();
+            // Remove result section and show empty state
+            if (resultSection) {
+                resultSection.style.animation = 'slideOut 0.4s ease forwards';
+                setTimeout(() => {
+                    resultSection.style.display = 'none';
+                    if (emptyState) {
+                        emptyState.style.display = 'block';
+                        emptyState.style.animation = 'slideIn 0.5s ease forwards';
+                    }
+                }, 400);
+            }
+        });
+        
+        // Input focus effects
+        document.querySelectorAll('.input-field').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.parentElement.classList.add('focused');
+            });
+            input.addEventListener('blur', function() {
+                this.parentElement.parentElement.classList.remove('focused');
+            });
+        });
+        
+        // Sparkle effect on result
+        function createSparkles() {
+            const container = document.getElementById('sparkleContainer');
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FECA57', '#FF9FF3'];
+            
+            for (let i = 0; i < 20; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                sparkle.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                container.appendChild(sparkle);
+            }
+        }
+        
+        // Confetti effect
+        function launchConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const confetti = [];
+            const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FECA57', '#FF9FF3', '#667eea'];
+            
+            for (let i = 0; i < 150; i++) {
+                confetti.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    w: Math.random() * 10 + 5,
+                    h: Math.random() * 6 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: Math.random() * 3 + 2,
+                    angle: Math.random() * 360,
+                    spin: Math.random() * 0.2 - 0.1,
+                    drift: Math.random() * 2 - 1
+                });
+            }
+            
+            let frame = 0;
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                confetti.forEach(c => {
+                    ctx.save();
+                    ctx.translate(c.x, c.y);
+                    ctx.rotate(c.angle);
+                    ctx.fillStyle = c.color;
+                    ctx.fillRect(-c.w / 2, -c.h / 2, c.w, c.h);
+                    ctx.restore();
+                    
+                    c.y += c.speed;
+                    c.angle += c.spin;
+                    c.x += c.drift;
+                });
+                
+                frame++;
+                if (frame < 200) {
+                    requestAnimationFrame(animate);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                }
+            }
+            
+            animate();
+        }
+        
+        // Trigger confetti on page load if there's a result
+        if (resultSection) {
+            setTimeout(() => {
+                launchConfetti();
+                createSparkles();
+            }, 500);
+        }
+    </script>
+</body>
+</html>
+
